@@ -7,12 +7,14 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class MainActivity extends AppCompatActivity {
@@ -32,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         info = findViewById(R.id.Info);
 
         btnConfirm.setOnClickListener(v->{
-
+            Rezerwacja();
         });
     }
 
@@ -46,7 +48,19 @@ public class MainActivity extends AppCompatActivity {
         int minute = timePicker.getMinute();
 
 
-        LocalDate selectedDate = LocalDate.of(year, month + 1, day);
-        LocalTime selectedTime = LocalTime.of(hour, minute);
+        LocalDate wybranaData = LocalDate.of(year, month + 1, day);
+        LocalTime wybranaGodzina = LocalTime.of(hour, minute);
+
+        LocalDateTime wybranaDataRezerwacji = LocalDateTime.of(wybranaData,wybranaGodzina);
+        LocalDateTime tearz = LocalDateTime.now();
+
+
+        if(wybranaDataRezerwacji.isBefore(tearz)){
+            info.setText("nie mozna dokonac rezerwacji w tym terminie!!");
+            info.setTextColor(R.color.red);
+        } else if (wybranaDataRezerwacji.isAfter(tearz)) {
+            info.setText("rezerwacja poszła pomyślnie!!");
+            info.setTextColor(R.color.red);
+        }
     }
 }
